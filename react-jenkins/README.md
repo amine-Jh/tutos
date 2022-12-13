@@ -52,7 +52,7 @@ RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2
 
 ## 1-4 Run the image of jenkinsBlueOcean as container 
 
-``
+`
 
 docker run \
   --name jenkins-blueocean \
@@ -70,7 +70,7 @@ docker run \
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
   myjenkins-blueocean:2.375.1-1
 
-``
+`
 
 
 # 2 - Setup Jenkins Wizard
@@ -88,6 +88,7 @@ install suggested plugins
 # 3 - Create your Pipeline project in Jenkins
 
 ## 3-1 Create new Job
+
 create a new job by clicking on **New Item** button 
 
 enter the item name
@@ -99,6 +100,39 @@ choose **Pipeline script from SCM** this means that your source code will be dep
 choose from SCM **git** and tap the url of your repo (could be remote or local repo)
 
 then click **save**
+
+## 3-2 Create jenkins file 
+
+`
+pipeline {
+    agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 3000:3000'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
+                input message: 'Finished using the web site? (Click "Proceed" to continue)' 
+                sh './jenkins/scripts/kill.sh' 
+            }
+        }
+    }
+}
+`
+
 
 
 
