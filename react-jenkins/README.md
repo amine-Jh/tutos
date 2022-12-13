@@ -11,7 +11,7 @@ for this we run jenkins as a docker container
 
 In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image using the following docker run command:
 
-``
+`
 docker run \
   --name jenkins-docker \
   --rm \
@@ -26,11 +26,11 @@ docker run \
   --publish 3000:3000 --publish 5000:5000 \
   docker:dind \
   --storage-driver overlay2 
-``
+`
 
 ## 1-2 Create dockerFile for JenkinsBlue Ocean tool
 
-``
+`
 FROM jenkins/jenkins:2.375.1-jdk11
 USER root
 RUN apt-get update && apt-get install -y lsb-release
@@ -43,8 +43,7 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
 RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2073b_2e"
-
-``
+`
 
 ## 1-3 Build the image of jenkinsBlueOcean run the command
 
@@ -74,7 +73,7 @@ docker run \
 ``
 
 
-# 2 - Run Jenkins Wizard
+# 2 - Setup Jenkins Wizard
 
 browse http://localhost:8080 
 
@@ -82,7 +81,26 @@ run the command below to show the generated password
 
 `docker logs jenkins-blueocean`
 
+enter the password
+
 install suggested plugins
 
 # 3 - Create your Pipeline project in Jenkins
-go to jenkins and create a new job by clicking on New Item
+
+## 3-1 Create new Job
+create a new job by clicking on **New Item** button 
+
+enter the item name
+
+choose pipeline and enter ok
+
+choose **Pipeline script from SCM** this means that your source code will be deployed on a source control management
+
+choose from SCM **git** and tap the url of your repo (could be remote or local repo)
+
+then click save
+
+
+
+
+
