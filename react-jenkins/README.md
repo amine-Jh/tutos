@@ -4,12 +4,14 @@ for this we run jenkins as a docker container
 
 # 1 - Run Jenkins in Docker
 
-first we create a #bridge network 
+## 1-1 first we create a #bridge network 
+
+
 `docker network create jenkins`
 
 In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image using the following docker run command:
 
-`
+``
 docker run \
   --name jenkins-docker \
   --rm \
@@ -24,11 +26,11 @@ docker run \
   --publish 3000:3000 --publish 5000:5000 \
   docker:dind \
   --storage-driver overlay2 
-`
+``
 
-Create dockerFile for JenkinsBlue Ocean tool
+## 1-2 Create dockerFile for JenkinsBlue Ocean tool
 
-`
+``
 FROM jenkins/jenkins:2.375.1-jdk11
 USER root
 RUN apt-get update && apt-get install -y lsb-release
@@ -41,15 +43,18 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
 RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2073b_2e"
-`
 
-Build the image of jenkinsBlueOcean run the command
+``
 
-## docker build -t myjenkins-blueocean:2.3751-1 .
+## 1-3 Build the image of jenkinsBlueOcean run the command
 
-and then we run the image above as container :
 
-‘
+` docker build -t myjenkins-blueocean:2.3751-1 . `
+
+## 1-4 Run the image of jenkinsBlueOcean as container 
+
+``
+
 docker run \
   --name jenkins-blueocean \
   --detach \
@@ -65,7 +70,8 @@ docker run \
   --restart=on-failure \
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
   myjenkins-blueocean:2.375.1-1
-‘
+
+``
 
 
 # 2 - Run Jenkins Wizard
@@ -74,7 +80,7 @@ browse http://localhost:8080
 
 run the command below to show the generated password
 
-‘docker logs jenkins-blueocean‘
+`docker logs jenkins-blueocean`
 
 install suggested plugins
 
