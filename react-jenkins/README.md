@@ -79,7 +79,8 @@ browse http://localhost:8080
 
 run the command below to show the generated password
 
-`docker logs jenkins-blueocean`
+`vim, viml - Vim Script
+docker logs jenkins-blueocean`
 
 enter the password
 
@@ -103,7 +104,7 @@ then click **save**
 
 ## 3-2 Create jenkins file 
 
-`
+`vim, viml - Vim Script
 pipeline {
     agent {
         docker {
