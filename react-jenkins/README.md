@@ -4,12 +4,16 @@ for this we run jenkins as a docker container
 
 # 1 - Run Jenkins in Docker
 
-first we create a #bridge network 
-`docker network create jenkins`
+## 1-1 first we create a #bridge network 
+
+
+```bash
+docker network create jenkins
+```
 
 In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image using the following docker run command:
 
-`
+```bash
 docker run \
   --name jenkins-docker \
   --rm \
@@ -24,11 +28,11 @@ docker run \
   --publish 3000:3000 --publish 5000:5000 \
   docker:dind \
   --storage-driver overlay2 
-`
+```
 
-Create dockerFile for JenkinsBlue Ocean tool
+## 1-2 Create dockerFile for JenkinsBlue Ocean tool
 
-`
+```bash
 FROM jenkins/jenkins:2.375.1-jdk11
 USER root
 RUN apt-get update && apt-get install -y lsb-release
@@ -41,15 +45,19 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
 RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2073b_2e"
-`
+```
 
-Build the image of jenkinsBlueOcean run the command
+## 1-3 Build the image of jenkinsBlueOcean run the command
 
-## docker build -t myjenkins-blueocean:2.3751-1 .
 
-and then we run the image above as container :
+```bash
+ docker build -t myjenkins-blueocean:2.3751-1 . 
+ ```
 
-‘
+## 1-4 Run the image of jenkinsBlueOcean as container 
+
+```bash
+
 docker run \
   --name jenkins-blueocean \
   --detach \
@@ -65,18 +73,77 @@ docker run \
   --restart=on-failure \
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
   myjenkins-blueocean:2.375.1-1
-‘
+
+```
 
 
-# 2 - Run Jenkins Wizard
+# 2 - Setup Jenkins Wizard
 
 browse http://localhost:8080 
 
 run the command below to show the generated password
 
-‘docker logs jenkins-blueocean‘
+```bash
+docker logs jenkins-blueocean
+```
+
+enter the password
 
 install suggested plugins
 
 # 3 - Create your Pipeline project in Jenkins
-go to jenkins and create a new job by clicking on New Item
+
+## 3-1 Create new Job
+
+create a new job by clicking on **New Item** button 
+
+enter the item name
+
+choose pipeline and enter ok
+
+choose **Pipeline script from SCM** this means that your source code will be deployed on a source control management
+
+choose from SCM **git** and tap the url of your repo (could be remote or local repo)
+
+then click **save**
+
+## 3-2 Create jenkins file 
+
+```vim, viml - Vim Script
+pipeline {
+    agent {
+        docker {
+            image 'node:lts-buster-slim'
+            args '-p 3000:3000'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+        stage('Deliver') { 
+            steps {
+                sh './jenkins/scripts/deliver.sh' 
+                input message: 'Finished using the web site? (Click "Proceed" to continue)' 
+                sh './jenkins/scripts/kill.sh' 
+            }
+        }
+    }
+}
+```
+Now you can access the jenkins blueocean to see your pipeline
+
+that has multiple stages build & Test & deliver
+
+
+
+
+
+
