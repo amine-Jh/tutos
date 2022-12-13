@@ -7,7 +7,9 @@ for this we run jenkins as a docker container
 ## 1-1 first we create a #bridge network 
 
 
-`docker network create jenkins`
+```bash
+docker network create jenkins
+```
 
 In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image using the following docker run command:
 
@@ -136,6 +138,8 @@ pipeline {
     }
 }
 ```
+Now you can access the jenkins blueocean to see your pipeline
+this pipeline has multiple stages build & Test & deliver
 
 
 
