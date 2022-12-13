@@ -139,7 +139,8 @@ pipeline {
 }
 ```
 Now you can access the jenkins blueocean to see your pipeline
-this pipeline has multiple stages build & Test & deliver
+
+that has multiple stages build & Test & deliver
 
 
 
