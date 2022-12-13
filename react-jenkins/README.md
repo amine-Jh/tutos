@@ -98,7 +98,7 @@ choose **Pipeline script from SCM** this means that your source code will be dep
 
 choose from SCM **git** and tap the url of your repo (could be remote or local repo)
 
-then click save
+then click **save**
 
 
 
