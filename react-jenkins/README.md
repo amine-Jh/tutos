@@ -79,8 +79,7 @@ browse http://localhost:8080
 
 run the command below to show the generated password
 
-```vim, viml - Vim Script
-docker logs jenkins-blueocean```
+`docker logs jenkins-blueocean`
 
 enter the password
 
