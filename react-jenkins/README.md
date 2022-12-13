@@ -30,7 +30,7 @@ docker run \
 
 ## 1-2 Create dockerFile for JenkinsBlue Ocean tool
 
-`
+```bash
 FROM jenkins/jenkins:2.375.1-jdk11
 USER root
 RUN apt-get update && apt-get install -y lsb-release
@@ -43,12 +43,14 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
 RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2073b_2e"
-`
+```
 
 ## 1-3 Build the image of jenkinsBlueOcean run the command
 
 
-` docker build -t myjenkins-blueocean:2.3751-1 . `
+```bash
+ docker build -t myjenkins-blueocean:2.3751-1 . 
+ ```
 
 ## 1-4 Run the image of jenkinsBlueOcean as container 
 
@@ -79,7 +81,9 @@ browse http://localhost:8080
 
 run the command below to show the generated password
 
-`docker logs jenkins-blueocean`
+```bash
+docker logs jenkins-blueocean
+```
 
 enter the password
 
