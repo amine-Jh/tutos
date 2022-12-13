@@ -11,7 +11,7 @@ for this we run jenkins as a docker container
 
 In order to execute Docker commands inside Jenkins nodes, download and run the docker:dind Docker image using the following docker run command:
 
-`
+```bash
 docker run \
   --name jenkins-docker \
   --rm \
@@ -26,7 +26,7 @@ docker run \
   --publish 3000:3000 --publish 5000:5000 \
   docker:dind \
   --storage-driver overlay2 
-`
+```
 
 ## 1-2 Create dockerFile for JenkinsBlue Ocean tool
 
@@ -52,7 +52,7 @@ RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2
 
 ## 1-4 Run the image of jenkinsBlueOcean as container 
 
-`
+```bash
 
 docker run \
   --name jenkins-blueocean \
@@ -70,7 +70,7 @@ docker run \
   --env JAVA_OPTS="-Dhudson.plugins.git.GitSCM.ALLOW_LOCAL_CHECKOUT=true" \
   myjenkins-blueocean:2.375.1-1
 
-`
+```
 
 
 # 2 - Setup Jenkins Wizard
